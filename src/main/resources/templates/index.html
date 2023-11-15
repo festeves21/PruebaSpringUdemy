@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-    <header th:replace="layout/plantilla :: header"/>
+    <header th:replace="layout/plantilla :: header"></header>
         <h1>Inicio</h1>
 
         <p th:text="${mensaje}"></p>
@@ -40,5 +40,7 @@
         <div th:if="${personas == null or personas.empty}">
             La lista de Personas esta vacias
         </div>
+
+       <footer th:replace="layout/plantilla :: footer"></footer>
     </body>
 </html>
