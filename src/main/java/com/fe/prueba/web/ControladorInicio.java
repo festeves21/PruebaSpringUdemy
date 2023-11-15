@@ -4,12 +4,17 @@ package com.fe.prueba.web;
 import com.fe.prueba.dao.IPersonaDao;
 import com.fe.prueba.domain.Persona;
 import java.util.*;
+
+import com.fe.prueba.servicio.PersonaService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
@@ -19,7 +24,7 @@ public class ControladorInicio {
     private String saludo;
     
     @Autowired
-    private IPersonaDao personaDao;
+    private PersonaService personaService;
     
     @GetMapping("/")
     public String inicio(Model model){
@@ -49,7 +54,7 @@ public class ControladorInicio {
        //var personas = Arrays.asList(persona, persona2);
        
        //
-        var personas = personaDao.findAll();
+        var personas = personaService.listarPersona();
         model.addAttribute("mensaje", mensaje);
         model.addAttribute("saludo", saludo);
         //model.addAttribute("persona", persona);
@@ -57,6 +62,36 @@ public class ControladorInicio {
 
         return "index";
     }
-           
+
+
+    @GetMapping("/agregar")
+    public String agregar(Persona persona){
+        return "modificar";
+
+    }
+
+    @PostMapping("/guardar")
+    public String guardar(@Valid Persona persona, Errors errores){
+        if(errores.hasErrors()){
+            return "modificar";
+        }
+        personaService.guardar(persona);
+        return "redirect:/";
+    }
+
+    @GetMapping("/editar/{idPersona}")
+    public String editar(Persona persona, Model model){
+        persona =personaService.encontrarPersona(persona);
+        model.addAttribute("persona",persona);
+
+        return "modificar";
+    }
+
+    @GetMapping("/eliminar")
+    public String eliminar(Persona persona){
+        personaService.eliminar(persona);
+        return "redirect:/";
+    }
+
 
 }

@@ -7,9 +7,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+    <header th:replace="layout/plantilla :: header"/>
         <h1>Inicio</h1>
+
         <p th:text="${mensaje}"></p>
         <p th:text="${saludo}"></p>
+        <br/>
+
+        <a th:href="@{/agregar}">Agregar Persona</a>
         <br/>
         <div th:if="${personas != null and !personas.empty}">
             <table border="1">
@@ -18,12 +23,16 @@
                     <th>Apellido</th>
                     <th>Email</th>
                     <th>Telefono</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
                 </tr>
                 <tr th:each="persona :  ${personas}" >
                     <td th:text="${persona.nombre}"></td>
                     <td th:text="${persona.apellido}"></td>
                     <td th:text="${persona.email}"></td>
                     <td th:text="${persona.telefono}"></td>
+                    <td> <a th:href="@{/editar/}  + ${persona.idPersona}" th:text="Editar" /></td>
+                    <td> <a th:href="@{/eliminar(idPersona= ${persona.idPersona})}" th:text="Eliminar" /></td>
                 </tr>
                 <br/>
             </table>
